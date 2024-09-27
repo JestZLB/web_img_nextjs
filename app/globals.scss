@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,body {
+  width: 100%;
+  height: 100%;
+}
+
+.left-part {
+  border-right: 16px solid;
+  @apply flex-1 p-4 border-r-morfonica-1 box-border  
+}
+
+.split-line {
+  width: 24px;
+  height: 100%;
+  @apply bg-morfonica-1
+}
+
+.capture-area {
+	width: 1284px;
+  @apply bg-white
+}
+
+.title-text {
+  @apply font-black text-3xl mb-2 text-toko flex items-end
+}
+
+.capture-title-text {
+  width: auto;
+  display: inline-flex;
+	font-size: 64px;
+	font-weight: bolder;
+	color: #FFF;
+	position: relative;
+	z-index: 0;
+  display: inline-block;
+
+  &::after {
+    content: attr(data-storke);
+    position: absolute;
+    left: 0px;
+    z-index: -1;
+    /* -webkit-text-stroke: 6px #833761; */
+    -webkit-text-stroke: 6px #6677CC;
+  }
+}
+
+.capture-title-main {
+  width: 100%;
+	text-align: center;
+	box-sizing: border-box;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: #6677cc36;
+  padding-bottom: 32px;
+  @apply flex flex-col justify-end bg-cover w-full h-96
+}
+
+.add-btn {
+  @apply border-morfonica-1 box-border rounded-lg p-3 font-black text-3xl text-morfonica-1 hover:bg-morfonica-1 hover:text-white  transition-colors duration-150
+}
+
+.capture-text-main {
+
+  >p {
+    @apply p-6 box-border whitespace-pre-wrap
+  }
+
+  &:last-of-type {
+    border: none;
+  }
+
+  &:first-of-type {
+    border: none;
+  }
+
+  @apply w-full p-2 box-border text-3xl text-black leading-relaxed my-4
+}
+
+.capture-img {
+
+  >img {
+    @apply w-full h-auto inline-block box-border border rounded-lg mt-4
+  }
+
+  @apply w-full h-auto
+}
