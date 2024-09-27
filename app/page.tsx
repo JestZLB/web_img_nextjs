@@ -4,6 +4,7 @@ import { Button, Input, Upload, UploadFile, Image, UploadProps, message, Switch 
 import ImgCrop from "antd-img-crop";
 import { UploadChangeParam } from "antd/es/upload";
 import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import normalImg from '@/public/bg_img/norm_bg.png'
 
 interface textObj {
   textImg: string;
@@ -15,6 +16,7 @@ interface DataObj {
   titleImg: string;
   name: string;
   textArr: Array<textObj>
+  descriptions : string;
 }
 
 const uplodBtn = (
@@ -27,7 +29,8 @@ export default function Home() {
   const [dataobj, setDataObj] = useState<DataObj>({
     titleImg: '',
     name: '',
-    textArr: []
+    textArr: [],
+    descriptions : ''
   });
 
   const [titleImgList, setTitleImgFileList] = useState<UploadFile[]>([]);
@@ -168,7 +171,7 @@ export default function Home() {
     <div className=" w-full h-full flex bg-morfonica-2/10 ">
       <div className=" left-part ">
         <div className="flex mb-4 items-center">
-          <div className=" text-2xl ">是否使用标题图片</div>
+          <div className=" text-2xl mr-2">是否使用标题图片</div>
           <Switch
             value={needTitleImg}
             onChange={(value) => {
@@ -186,6 +189,21 @@ export default function Home() {
             onChange={(e) => {
               const obj = {
                 name: e.target.value
+              }
+              changeDataObj(obj)
+            }}
+          ></Input>
+        </div>
+
+        <div className=" mb-4 ">
+          <h2 className="title-text">
+            标题描述：
+          </h2>
+          <Input
+            placeholder="输入标题描述"
+            onChange={(e) => {
+              const obj = {
+                descriptions : e.target.value
               }
               changeDataObj(obj)
             }}
@@ -283,10 +301,9 @@ export default function Home() {
         <div className=" capture-area " ref={capture}>
           {
             needTitleImg ?
-              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg}')` }}>
-                <p className=" text-center ">
+              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg.length ? dataobj.titleImg : `${normalImg.src}` }')` }}>
                   <span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span>
-                </p>
+                  <span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span>
               </div>
               : null
           }
