@@ -5,6 +5,7 @@ import ImgCrop from "antd-img-crop";
 import { UploadChangeParam } from "antd/es/upload";
 import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import normalImg from '@/public/bg_img/norm_bg.png'
+import React from "react";
 
 interface textObj {
   textImg: string;
