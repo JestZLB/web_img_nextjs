@@ -9,7 +9,7 @@ html,body {
 
 .left-part {
   border-right: 16px solid;
-  @apply flex-1 p-4 border-r-morfonica-1 box-border  
+  @apply flex-1 p-4 border-r-morfonica-1 box-border min-h-svh
 }
 
 .split-line {
@@ -55,13 +55,12 @@ html,body {
 }
 
 .capture-title-main {
-  width: 100%;
 	text-align: center;
 	box-sizing: border-box;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-color: #6677cc36;
-  @apply  bg-cover w-full h-96 grid grid-rows-3
+  @apply  bg-cover w-full h-96
 }
 
 .add-btn {

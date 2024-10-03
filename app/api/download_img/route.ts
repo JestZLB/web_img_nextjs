@@ -3,8 +3,8 @@ import puppeteer from 'puppeteer'
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
+//直接截图但是无法截取动态生成的代码
 const screenshotFn1 = async (url: string, className: string, name: string) => {
     try {
         if (!name) {
@@ -59,9 +59,11 @@ const screenshotFn1 = async (url: string, className: string, name: string) => {
     }
 }
 
+//通过api获取html代码生成动态页面
 const screenshotFn2 = async (url: string, pngname: string, html: string) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    await page.setViewport({ width: 1284, height: 0 });
     console.log(url)
     await page.setContent(`
         <html>
@@ -103,8 +105,6 @@ export async function POST(request: NextRequest) {
     if (!url) {
         return NextResponse.json({ error: "出现错误" }, { status: 400 })
     }
-
-    console.log(html)
 
     const imgUrl = await screenshotFn2(url, pngname, html);
 

@@ -4,7 +4,6 @@ import { Button, Input, Upload, UploadFile, Image, UploadProps, message, Switch 
 import ImgCrop from "antd-img-crop";
 import { UploadChangeParam } from "antd/es/upload";
 import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
-import normalImg from '@/public/bg_img/norm_bg.png'
 import React from "react";
 
 interface textObj {
@@ -33,6 +32,8 @@ export default function Home() {
     textArr: [],
     descriptions : ''
   });
+
+  const [normalImg,setNormalImg] = useState<string>(``)
 
   const [titleImgList, setTitleImgFileList] = useState<UploadFile[]>([]);
   const capture = useRef<HTMLDivElement | null>(null);
@@ -167,9 +168,13 @@ export default function Home() {
     }
   }, [titleImgList])
 
+  useEffect(()=>{
+    setNormalImg(`${window.location.href}bg_img/norm_bg.png`)
+  },[])
+
 
   return (
-    <div className=" w-full h-full flex bg-morfonica-2/10 ">
+    <div className=" w-full flex bg-morfonica-2/10 ">
       <div className=" left-part ">
         <div className="flex mb-4 items-center">
           <div className=" text-2xl mr-2">是否使用标题图片</div>
@@ -302,9 +307,9 @@ export default function Home() {
         <div className=" capture-area " ref={capture}>
           {
             needTitleImg ?
-              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg.length ? dataobj.titleImg : `${normalImg.src}` }')` }}>
-                  <span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span>
-                  <span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span>
+              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg.length ? dataobj.titleImg : `${normalImg}` }')` }}>
+                  <p className=" pt-24 "><span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span></p>
+                  <p className=" mt-12 "><span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span></p>
               </div>
               : null
           }
