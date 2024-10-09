@@ -259,6 +259,7 @@ export default function Home() {
                     onChange={(e) => { sendTextArrText(e.target.value, item.id) }}
                     style={{ resize: 'none' }}
                     placeholder="请输入文本"
+                    autoSize={{ minRows: 4, maxRows: 8 }} // 自动调整高度
                   ></Input.TextArea>
                 </div>
                 {
