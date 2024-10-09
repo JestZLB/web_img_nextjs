@@ -3,6 +3,7 @@ import puppeteer from 'puppeteer'
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
+import { replaceTxt } from '@/public/methods';
 
 //直接截图但是无法截取动态生成的代码
 const screenshotFn1 = async (url: string, className: string, name: string) => {
@@ -64,7 +65,7 @@ const screenshotFn2 = async (url: string, pngname: string, html: string) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setViewport({ width: 1284, height: 0 });
-    console.log(url)
+    const newPngName = replaceTxt(pngname)
     await page.setContent(`
         <html>
             <head>
@@ -88,9 +89,9 @@ const screenshotFn2 = async (url: string, pngname: string, html: string) => {
     if (!fs.existsSync(screenshotsDir)) {
         fs.mkdirSync(screenshotsDir, { recursive: true });
     }
-    const filePath = path.join(process.cwd(), 'public', 'screenshots', `${pngname}.jpg`)
+    const filePath = path.join(process.cwd(), 'public', 'screenshots', `${newPngName}.jpg`)
     await fs.promises.writeFile(filePath, compressedBuffer);
-    const baseUrl = `${url}/screenshots/${pngname}.jpg`;
+    const baseUrl = `${url}/screenshots/${newPngName}.jpg`;
     return baseUrl
 }
 

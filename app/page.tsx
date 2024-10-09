@@ -311,13 +311,21 @@ export default function Home() {
                   <p className=" pt-24 "><span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span></p>
                   <p className=" mt-12 "><span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span></p>
               </div>
-              : null
+              : 
+              <div className="w-full p-8 text-center ">
+                <span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span>
+              </div>
           }
           <div>
           {
             dataobj.textArr.length ? dataobj.textArr.map(item =>
               <div key={item.id} className="capture-text-main">
-                <p>{item.text}</p>
+                {
+                  item.text.length ?
+                  <p>{item.text}</p>
+                  :
+                  null
+                }
                 {
                   item.textImg.length ?
                     <div className="capture-img">
