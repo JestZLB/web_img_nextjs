@@ -81,7 +81,7 @@ html,body {
     border: none;
   }
 
-  @apply w-full p-2 box-border text-3xl text-black leading-relaxed my-4
+  @apply w-full p-2 box-border text-4xl text-black leading-relaxed my-4
 }
 
 .capture-img {
@@ -91,4 +91,9 @@ html,body {
   }
 
   @apply w-full h-auto
+}
+
+.part-line {
+  border-top: 4px dashed #333333;
+  @apply mx-4;
 }

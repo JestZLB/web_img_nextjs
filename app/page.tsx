@@ -323,7 +323,10 @@ export default function Home() {
               <div key={item.id} className="capture-text-main">
                 {
                   item.text.length ?
-                  <p>{item.text}</p>
+                  <>
+                    <div className=" part-line "></div>
+                    <p>{item.text}</p>
+                  </>
                   :
                   null
                 }
