@@ -97,3 +97,7 @@ html,body {
   border-top: 4px dashed #333333;
   @apply mx-4;
 }
+
+.json-upload-btn {
+  @apply p-4 text-3xl font-black border-msr rounded-lg text-msr hover:bg-msr hover:text-white transition-colors duration-150
+}

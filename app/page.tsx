@@ -2,7 +2,7 @@
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Input, Upload, UploadFile, Image, UploadProps, message, Switch } from "antd";
 import ImgCrop from "antd-img-crop";
-import { UploadChangeParam } from "antd/es/upload";
+import { RcFile, UploadChangeParam } from "antd/es/upload";
 import { ChangeEvent, Dispatch, LegacyRef, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 
@@ -154,6 +154,35 @@ export default function Home() {
     }
   }
 
+  const beforeUpload = (file: RcFile): boolean => {
+    const isJson = file.type === 'application/json';
+    if (!isJson) {
+      message.error('You can only upload JSON files!');
+    }
+    return isJson;
+  };
+
+    // 处理上传后的文件，读取 JSON 内容
+    const handleChange = (info: UploadChangeParam) => {
+      if (info.file.status === 'done') {
+        const file = info.file.originFileObj as RcFile;
+        const reader = new FileReader();
+  
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+          try {
+            const result = e.target?.result as string;
+            const json = JSON.parse(result);
+            setDataObj(json);
+            message.success('File uploaded successfully!');
+          } catch (error) {
+            message.error('Invalid JSON file');
+          }
+        };
+  
+        reader.readAsText(file);
+      }
+    };
+
   useEffect(() => {
     if (titleImgList.length) {
       const obj = {
@@ -192,6 +221,7 @@ export default function Home() {
           </h2>
           <Input
             placeholder="这里输入标题"
+            value={dataobj.name}
             onChange={(e) => {
               const obj = {
                 name: e.target.value
@@ -206,6 +236,7 @@ export default function Home() {
             标题描述：
           </h2>
           <Input
+            value={dataobj.descriptions}
             placeholder="输入标题描述"
             onChange={(e) => {
               const obj = {
@@ -260,6 +291,7 @@ export default function Home() {
                     style={{ resize: 'none' }}
                     placeholder="请输入文本"
                     autoSize={{ minRows: 4, maxRows: 8 }} // 自动调整高度
+                    value={item.text}
                   ></Input.TextArea>
                 </div>
                 {
@@ -303,8 +335,16 @@ export default function Home() {
             下载图片
           </button>
         </div>
+        <div>
+          <Upload
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+          >
+            <button className="json-upload-btn">上传JSON</button>
+          </Upload>
+        </div>
       </div>
-      <div className=" px-4">
+      <div className=" px-4 ">
         <div className=" capture-area " ref={capture}>
           {
             needTitleImg ?
@@ -322,13 +362,15 @@ export default function Home() {
             dataobj.textArr.length ? dataobj.textArr.map(item =>
               <div key={item.id} className="capture-text-main">
                 {
-                  item.text.length ?
                   <>
                     <div className=" part-line "></div>
-                    <p>{item.text}</p>
+                    {
+                      item.text.length ?
+                      <p>{item.text}</p>
+                      :
+                      null
+                    }
                   </>
-                  :
-                  null
                 }
                 {
                   item.textImg.length ?
