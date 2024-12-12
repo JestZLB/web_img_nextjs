@@ -65,7 +65,8 @@ const screenshotFn2 = async (url: string, pngname: string, html: string) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setViewport({ width: 1284, height: 0 });
-    const newPngName = replaceTxt(pngname)
+    const newPngName = replaceTxt(pngname);
+    console.log(newPngName);
     await page.setContent(`
         <html>
             <head>

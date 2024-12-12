@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { PluginAPI } from 'tailwindcss/types/config';
 
 const config: Config = {
   content: [
@@ -26,26 +27,26 @@ const config: Config = {
         4: '0.2rem',
         // Add more if needed
       },
-      width : {
-        "1024" : '1024px',
-        "1440" : '1440px',
-        "9/10" : '90%',
-        "1920" : '1920px',
-        "750" : '750px'
+      width: {
+        "1024": '1024px',
+        "1440": '1440px',
+        "9/10": '90%',
+        "1920": '1920px',
+        "750": '750px'
       },
-      height : {
-        "1080" : '1080px',
-        "9/10" : '90%',
+      height: {
+        "1080": '1080px',
+        "9/10": '90%',
       },
-      padding : {
-        "9/16" : '56.25%',
-        '1/5' : '20%',
-        '2/5' : '40%',
-        '3/5' : '60%',
-        '4/5' : '80%',
+      padding: {
+        "9/16": '56.25%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
       },
-      zIndex : {
-        1 : '1'
+      zIndex: {
+        1: '1'
       },
       keyframes: {
         customPing: {
@@ -55,15 +56,15 @@ const config: Config = {
       animation: {
         customPing: 'customPing 1s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
-      rotate : {
-        "360" : "360deg"
+      rotate: {
+        "360": "360deg"
       }
     },
 
   },
   plugins: [
-    function({ addUtilities, theme }) {
-      const newUtilities = {
+    function ({ addUtilities, theme }: PluginAPI) {
+      const newUtilities: Record<string, Record<string, string>> = {
         ".border-morfonica-1": {
           border: `1px solid ${theme('colors.morfonica-1')}`,
         },
@@ -86,15 +87,21 @@ const config: Config = {
           border: `1px solid ${theme('colors.rui')}`,
         },
       };
-      addUtilities(newUtilities, ['responsive', 'hover']);
+
+      // 使用选项对象形式
+      addUtilities(newUtilities, {
+        respectPrefix: true,
+        respectImportant: true,
+      });
     },
-    function({ addUtilities, theme }) {
-      const colors = theme('colors');
-      let newUtilities:any = {};
-      // This will iterate over your color palette
+    function ({ addUtilities, theme }: PluginAPI) {
+      const colors = theme('colors') as Record<string, string | Record<string, string>>;
+      const strokeWidths = theme('textStrokeWidth') as Record<string, string>;
+      const newUtilities: Record<string, Record<string, string>> = {};
+
+      // 遍历颜色主题
       Object.keys(colors).forEach(key => {
         const color = colors[key];
-        // This handles the case where the color is an object with shades
         if (typeof color === 'object' && color !== null) {
           Object.keys(color).forEach(shade => {
             const className = `.text-stroke-${key}-${shade}`;
@@ -102,8 +109,7 @@ const config: Config = {
               '-webkit-text-stroke-color': color[shade],
             };
           });
-        } else {
-          // This is when the color is a simple string
+        } else if (typeof color === 'string') {
           const className = `.text-stroke-${key}`;
           newUtilities[className] = {
             '-webkit-text-stroke-color': color,
@@ -111,8 +117,7 @@ const config: Config = {
         }
       });
 
-      // This adds text stroke width utilities
-      const strokeWidths = theme('textStrokeWidth');
+      // 添加文本描边宽度的工具类
       Object.keys(strokeWidths).forEach(key => {
         const className = `.text-stroke-${key}`;
         newUtilities[className] = {
@@ -120,8 +125,13 @@ const config: Config = {
         };
       });
 
-      addUtilities(newUtilities, ['responsive', 'hover']);
+      // 使用选项对象形式
+      addUtilities(newUtilities, {
+        respectPrefix: true,
+        respectImportant: true,
+      });
     },
   ],
+
 };
 export default config;

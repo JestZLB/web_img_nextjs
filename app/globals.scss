@@ -46,7 +46,7 @@ html,body {
     -webkit-text-stroke: 6px #6677CC;
   }
 
-  @apply text-6xl
+  @apply text-6xl 
 }
 
 .capture-title-descriptions {
@@ -64,7 +64,7 @@ html,body {
 }
 
 .add-btn {
-  @apply border-morfonica-1 box-border rounded-lg p-3 font-black text-3xl text-morfonica-1 hover:bg-morfonica-1 hover:text-white  transition-colors duration-150
+  @apply border-morfonica-1 box-border rounded-lg p-4 font-black text-3xl text-morfonica-1 hover:bg-morfonica-1 hover:text-white  transition-colors duration-150
 }
 
 .capture-text-main {
@@ -100,4 +100,8 @@ html,body {
 
 .json-upload-btn {
   @apply p-4 text-3xl font-black border-msr rounded-lg text-msr hover:bg-msr hover:text-white transition-colors duration-150
+}
+
+.reset-btn {
+  @apply p-4 text-3xl font-black border border-red-500 rounded-lg text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-150 ml-2
 }

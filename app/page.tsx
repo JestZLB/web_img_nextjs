@@ -16,7 +16,7 @@ interface DataObj {
   titleImg: string;
   name: string;
   textArr: Array<textObj>
-  descriptions : string;
+  descriptions: string;
 }
 
 const uplodBtn = (
@@ -30,10 +30,10 @@ export default function Home() {
     titleImg: '',
     name: '',
     textArr: [],
-    descriptions : ''
+    descriptions: ''
   });
 
-  const [normalImg,setNormalImg] = useState<string>(``)
+  const [normalImg, setNormalImg] = useState<string>(``)
 
   const [titleImgList, setTitleImgFileList] = useState<UploadFile[]>([]);
   const capture = useRef<HTMLDivElement | null>(null);
@@ -162,26 +162,37 @@ export default function Home() {
     return isJson;
   };
 
-    // 处理上传后的文件，读取 JSON 内容
-    const handleChange = (info: UploadChangeParam) => {
-      if (info.file.status === 'done') {
-        const file = info.file.originFileObj as RcFile;
-        const reader = new FileReader();
-  
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-          try {
-            const result = e.target?.result as string;
-            const json = JSON.parse(result);
-            setDataObj(json);
-            message.success('File uploaded successfully!');
-          } catch (error) {
-            message.error('Invalid JSON file');
-          }
-        };
-  
-        reader.readAsText(file);
-      }
-    };
+  // 处理上传后的文件，读取 JSON 内容
+  const handleChange = (info: UploadChangeParam) => {
+    if (info.file.status === 'done') {
+      const file = info.file.originFileObj as RcFile;
+      const reader = new FileReader();
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        try {
+          const result = e.target?.result as string;
+          const json = JSON.parse(result);
+          setDataObj(json);
+          message.success('File uploaded successfully!');
+        } catch (error) {
+          message.error('Invalid JSON file');
+        }
+      };
+
+      reader.readAsText(file);
+    }
+  };
+
+  //重置
+  const resetFn = ()=>{
+    setNeedTitleImg(true);
+    setDataObj({
+      titleImg: '',
+      name: '',
+      textArr: [],
+      descriptions: ''
+    })
+  }
 
   useEffect(() => {
     if (titleImgList.length) {
@@ -197,9 +208,9 @@ export default function Home() {
     }
   }, [titleImgList])
 
-  useEffect(()=>{
+  useEffect(() => {
     setNormalImg(`${window.location.href}bg_img/norm_bg.png`)
-  },[])
+  }, [])
 
 
   return (
@@ -240,7 +251,7 @@ export default function Home() {
             placeholder="输入标题描述"
             onChange={(e) => {
               const obj = {
-                descriptions : e.target.value
+                descriptions: e.target.value
               }
               changeDataObj(obj)
             }}
@@ -335,55 +346,61 @@ export default function Home() {
             下载图片
           </button>
         </div>
-        <div>
+        <div className="flex">
           <Upload
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
           >
             <button className="json-upload-btn">上传JSON</button>
           </Upload>
+          <button 
+          className="reset-btn"
+          onClick={resetFn}
+          >
+            重置
+          </button>
         </div>
       </div>
       <div className=" px-4 ">
         <div className=" capture-area " ref={capture}>
           {
             needTitleImg ?
-              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg.length ? dataobj.titleImg : `${normalImg}` }')` }}>
-                  <p className=" pt-24 "><span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span></p>
-                  <p className=" mt-12 "><span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span></p>
+              <div className="capture-title-main" style={{ backgroundImage: `url('${dataobj.titleImg.length ? dataobj.titleImg : `${normalImg}`}')` }}>
+                <p className=" pt-24 "><span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span></p>
+                <p className=" mt-12 "><span className="capture-title-text capture-title-descriptions" data-storke={dataobj.descriptions} >{dataobj.descriptions}</span></p>
               </div>
-              : 
-              <div className="w-full p-8 text-center ">
+              :
+              <div className="w-full p-8 text-center flex items-center justify-center ">
                 <span className="capture-title-text" data-storke={dataobj.name} >{dataobj.name}</span>
               </div>
           }
           <div>
-          {
-            dataobj.textArr.length ? dataobj.textArr.map(item =>
-              <div key={item.id} className="capture-text-main">
-                {
-                  <>
-                    <div className=" part-line "></div>
-                    {
-                      item.text.length ?
-                      <p>{item.text}</p>
+            {
+              dataobj.textArr.length ? dataobj.textArr.map(item =>
+                <div key={item.id} className="capture-text-main">
+                  {
+                    <>
+                      <div className=" part-line "></div>
+                      {
+                        item.text.length ?
+                          <p>{item.text}</p>
+                          :
+                          null
+                      }
+                    </>
+                  }
+                  {
+                    item.textImg.length ?
+                      <div className="capture-img">
+                        <img src={item.textImg}></img>
+                      </div>
                       :
                       null
-                    }
-                  </>
-                }
-                {
-                  item.textImg.length ?
-                    <div className="capture-img">
-                      <img src={item.textImg}></img>
-                    </div>
-                    :
-                    null
-                }
-              </div>
-            )
-              : null
-          }
+                  }
+                </div>
+              )
+                : null
+            }
           </div>
         </div>
       </div>
